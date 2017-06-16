@@ -170,7 +170,7 @@ const EditorContainer = React.createClass({
       return this.props.value;
     }
 
-    let text = keyCode ? String.fromCharCode(keyCode) : this.props.value;
+    let text = (keyCode && keyCode !== 'DoubleClick') ? String.fromCharCode(keyCode) : this.props.value;
     return text;
   },
 
@@ -274,14 +274,14 @@ const EditorContainer = React.createClass({
     let keyCode = selected.initialKeyCode;
     let inputNode = this.getInputNode();
     inputNode.focus();
-    if (inputNode.tagName === 'INPUT') {
-      if (!this.isKeyPrintable(keyCode)) {
-        inputNode.focus();
-        inputNode.select();
-      } else {
-        inputNode.select();
-      }
-    }
+    // if (inputNode.tagName === 'INPUT') {
+    //   if (!this.isKeyPrintable(keyCode)) {
+    //     inputNode.focus();
+    //     inputNode.select();
+    //   } else {
+    //     inputNode.select();
+    //   }
+    // }
   },
 
   hasEscapeBeenPressed() {

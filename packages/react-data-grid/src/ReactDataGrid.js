@@ -747,6 +747,7 @@ const ReactDataGrid = React.createClass({
     }
 
     let selected = {rowIdx, idx};
+
     if (this.hasSelectedCellChanged(selected)) {
       this.setState({selected}, () => {
         this.setActive('Enter');
@@ -829,9 +830,9 @@ const ReactDataGrid = React.createClass({
 
   setupGridColumns: function(props = this.props): Array<any> {
     const { columns } = props;
-    if (this._cachedColumns === columns) {
-      return this._cachedComputedColumns;
-    }
+    // if (this._cachedColumns === columns) {
+    //   return this._cachedComputedColumns;
+    // }
 
     this._cachedColumns = columns;
 

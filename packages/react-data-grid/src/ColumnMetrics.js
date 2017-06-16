@@ -108,48 +108,22 @@ function areColumnsImmutable(prevColumns: Array<Column>, nextColumns: Array<Colu
   return isColumnsImmutable(prevColumns) && isColumnsImmutable(nextColumns);
 }
 
-function compareEachColumn(prevColumns: Array<Column>, nextColumns: Array<Column>, isSameColumn: (a: Column, b: Column) => boolean) {
-  let i;
-  let len;
-  let column;
-  let prevColumnsByKey: { [key:string]: Column } = {};
-  let nextColumnsByKey: { [key:string]: Column } = {};
-
-
-  if (ColumnUtils.getSize(prevColumns) !== ColumnUtils.getSize(nextColumns)) {
+function compareEachColumn(prevColumns: Array<Column>, nextColumns: Array<Column>) {
+  return nextColumns.every( (value, index) => {
+    const prevColumn = prevColumns[index];
+    if (prevColumn) {
+      return value.key === prevColumn.key;
+    }
     return false;
-  }
-
-  for (i = 0, len = ColumnUtils.getSize(prevColumns); i < len; i++) {
-    column = prevColumns[i];
-    prevColumnsByKey[column.key] = column;
-  }
-
-  for (i = 0, len = ColumnUtils.getSize(nextColumns); i < len; i++) {
-    column = nextColumns[i];
-    nextColumnsByKey[column.key] = column;
-    let prevColumn = prevColumnsByKey[column.key];
-    if (prevColumn === undefined || !isSameColumn(prevColumn, column)) {
-      return false;
-    }
-  }
-
-  for (i = 0, len = ColumnUtils.getSize(prevColumns); i < len; i++) {
-    column = prevColumns[i];
-    let nextColumn = nextColumnsByKey[column.key];
-    if (nextColumn === undefined) {
-      return false;
-    }
-  }
-  return true;
+  });
 }
 
 function sameColumns(prevColumns: Array<Column>, nextColumns: Array<Column>, isSameColumn: (a: Column, b: Column) => boolean): boolean {
   if (areColumnsImmutable(prevColumns, nextColumns)) {
     return prevColumns === nextColumns;
   }
-
-  return compareEachColumn(prevColumns, nextColumns, isSameColumn);
+  const compare = compareEachColumn(prevColumns, nextColumns, isSameColumn);
+  return compare;
 }
 
 module.exports = { recalculate, resizeColumn, sameColumn, sameColumns };
