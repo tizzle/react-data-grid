@@ -119,6 +119,7 @@ function compareEachColumn(prevColumns: Array<Column>, nextColumns: Array<Column
 }
 
 function sameColumns(prevColumns: Array<Column>, nextColumns: Array<Column>, isSameColumn: (a: Column, b: Column) => boolean): boolean {
+  if (prevColumns.length !== nextColumns.length ) return false;
   if (areColumnsImmutable(prevColumns, nextColumns)) {
     return prevColumns === nextColumns;
   }

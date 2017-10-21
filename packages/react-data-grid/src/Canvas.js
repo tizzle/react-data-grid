@@ -118,7 +118,8 @@ const Canvas = React.createClass({
       || this.props.colVisibleStart !== nextProps.colVisibleStart
       || this.props.colVisibleEnd !== nextProps.colVisibleEnd
       || !shallowEqual(nextProps.style, this.props.style);
-    return shouldUpdate;
+    // return shouldUpdate;
+    return true;
   },
 
   componentWillUnmount() {
@@ -233,16 +234,19 @@ const Canvas = React.createClass({
 
   renderRow(props: any) {
     let row = props.row;
-    if (row.__metaData && row.__metaData.getRowRenderer) {
+
+    if (row && row.__metaData && row.__metaData.getRowRenderer) {
       return row.__metaData.getRowRenderer(this.props, props.idx);
     }
-    if (row.__metaData && row.__metaData.isGroup) {
+
+    if (row && row.__metaData && row.__metaData.isGroup) {
       return (<RowGroup
         {...props}
         {...row.__metaData}
         name={row.name}
         renderer={this.props.rowGroupRenderer} />);
     }
+
     let RowsRenderer = this.props.rowRenderer;
     if (typeof RowsRenderer === 'function') {
       return <RowsRenderer {...props}/>;
